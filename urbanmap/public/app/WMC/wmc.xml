@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding="ISO-8859-1" standalone="no" ?>
+<ViewContext version="1.0.0" id="mum2_ogc_workshop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.opengis.net/context" xsi:schemaLocation="http://www.opengis.net/context http://schemas.opengis.net/context/1.0.0/context.xsd">
+  <General>
+    <Window width="500" height="300"/>
+    <!-- Bounding box corners and spatial reference system -->
+    <BoundingBox SRS="EPSG:31370" minx="176643" miny="130807" maxx="187577" maxy="141741"/>
+    <!-- Title of Context -->
+    <Title>Urban Context 1</Title>
+    <KeywordList>
+      <Keyword>urban</Keyword>
+      <Keyword>commune plone</Keyword>
+      <Keyword>urbanmap</Keyword>
+    </KeywordList>
+    <Abstract>Test WMC Context</Abstract>
+    <LogoURL width="655" height="130" format="image/jpeg">      
+    	<OnlineResource xlink:type="simple" xlink:href="http://www.omsug.ca/osgis2004/images/top_banner_2.jpg"/>
+	</LogoURL>
+    <DescriptionURL format="text/html">      
+    	<OnlineResource xlink:type="simple" xlink:href="http://www.omsug.ca/osgis2004/"/>
+	</DescriptionURL>
+    <ContactInformation>
+      <ContactPersonPrimary>
+	      <ContactPerson>Nicolas Dufrane</ContactPerson>
+	      <ContactOrganization>Geode</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition>CTO</ContactPosition>
+      <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>867 Lakeshore Road</Address>
+        <City>Burlington</City>
+        <StateOrProvince>Ontario</StateOrProvince>
+        <PostCode>L7R-4A6</PostCode>
+        <Country>Canada</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone></ContactVoiceTelephone>
+      <ContactFacsimileTelephone></ContactFacsimileTelephone>
+  	<ContactElectronicMailAddress>nicolas.dufrane@opengeode.be</ContactElectronicMailAddress>
+    </ContactInformation>
+  </General>
+  <LayerList>
+    <Layer queryable="0" hidden="0">
+      <Server service="WMS" version="1.1.0" title="Geode GWC Geoserver">
+        <OnlineResource xlink:type="simple" xlink:href="http://89.16.179.114:8008/geoserver/gwc/service/wms"/>
+      </Server>
+      <Name>urban92141:capa</Name>
+      <Title>Parcellaire</Title>
+      <Abstract>Parcellaire</Abstract>
+      <SRS>EPSG:31370</SRS>
+      <FormatList>
+        <Format>image/gif</Format>
+        <Format current="1">image/png</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/wbmp</Format>
+      </FormatList>
+      <StyleList>
+        <Style>
+          <Name>default</Name>
+          <Title>Default Style</Title>
+        </Style>
+      </StyleList>
+      <Extension> 
+      <!--
+        <ol:maxExtent xmlns:ol="http://openlayers.org/context" minx="-357823.2365" miny="6037008.6939" maxx="2146865.3059" maxy="8541697.2363" />
+        <ol:tileSize xmlns:ol="http://openlayers.org/context" width="256" height="256" /> 
+        <ol:numZoomLevels xmlns:ol="http://openlayers.org/context">20</ol:numZoomLevels> 
+       -->
+       
+        <ol:units xmlns:ol="http://openlayers.org/context">m</ol:units> 
+        <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">false</ol:isBaseLayer> 
+        <ol:opacity xmlns:ol="http://openlayers.org/context">0</ol:opacity> 
+        <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">false</ol:displayInLayerSwitcher> 
+        <ol:singleTile xmlns:ol="http://openlayers.org/context">false</ol:singleTile> 
+      </Extension> 
+    </Layer>
+    <Layer queryable="0" hidden="0">
+      <Server service="WMS" version="1.1.0" title="Geode Geoserver">
+        <OnlineResource xlink:type="simple" xlink:href="http://89.16.179.114:8008/geoserver/wms"/>
+      </Server>
+      <Name>urban92141:cabu</Name>
+      <Title>Bati</Title>
+      <Abstract>Bati</Abstract>
+      <SRS>EPSG:31370</SRS>
+      <FormatList>
+        <Format>image/gif</Format>
+        <Format current="1">image/png</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/wbmp</Format>
+      </FormatList>
+      <StyleList>
+        <Style>
+          <Name>default</Name>
+          <Title>Default Style</Title>
+        </Style>
+      </StyleList>
+      <Extension> 
+        <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">false</ol:isBaseLayer> 
+        <ol:opacity xmlns:ol="http://openlayers.org/context">0.4</ol:opacity> 
+        <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">false</ol:displayInLayerSwitcher> 
+        <ol:singleTile xmlns:ol="http://openlayers.org/context">false</ol:singleTile> 
+      </Extension> 
+    </Layer>
+  </LayerList>
+</ViewContext>

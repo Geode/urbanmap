@@ -35,6 +35,10 @@ class ProxyController(BaseController):
             else:
                 logger.info('open url : '+url+"?%s" % urllib.urlencode(pDict))
                 conn = urllib2.urlopen(url+"?%s" % urllib.urlencode(pDict))
+            if(conn.headers.gettype()=="text/csv"):
+                response.headers['content-type'] = 'text/csv; charset=utf8'
+                response.headers['content-disposition'] = 'attachement;filename=results.csv'
+
             return conn.read()
         except:
             abort(500)

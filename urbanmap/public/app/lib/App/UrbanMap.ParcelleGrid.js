@@ -216,12 +216,17 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
         	
         	var paramsCSV = '?';
         	Ext.iterate(store.lastOptions.params, function(key,value) {
-        		paramsCSV += key+'='+value+'&';
+        		if(key != "limit") {
+        			paramsCSV += key+'='+value+'&';
+        		}
         	});
         	
+
         	var urlCSV = UrbanMap.config.urbanmap_url + '/mapcapas/getCSV/getCSV'+paramsCSV;
+        	var proxyUrlCSV = UrbanMap.config.proxy_url + urlCSV;
+        	urlCSV = urlCSV.replace('\'', ' ');
         	
-        	this.setTitle('<a href="'+urlCSV+'">Résultats (downloader CSV)</a>');
+        	this.setTitle("<a href='"+proxyUrlCSV+"'>Résultats (downloader CSV)</a>");
         	
         	if (this.capakeyToHighlight != null)
         	{

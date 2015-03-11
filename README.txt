@@ -4,16 +4,25 @@ you would include information such as the information below:
 Installation and Setup
 ======================
 
-1)You need to have mapfish 2.0 installed and the mapfish print module: 
+Without Buildout
 
-http://www.mapfish.org/doc/2.0/installation.html
+1)You need to have mapfish 2.2 installed and the mapfish print module: 
+
+http://www.mapfish.org/doc/2.2/installation.html
 
 http://www.mapfish.org/doc/print/installation.html
-
 
 2)Download the last urbanmap tag on the SVN (trunk is unstable)
 
 3)Setup virtual env (should be done with mapfish installation)
+
+With Buildout
+
+1) git clone https://github.com/Geode/urbanmap-buildout
+
+2) make
+
+---------------------
 
 4)Activate the virtualenv (source {env _location}/bin/activate)
 

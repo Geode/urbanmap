@@ -12,7 +12,7 @@
  * @include GeoExt/widgets/ZoomSlider.js
  * @include GeoExt/widgets/tips/ZoomSliderTip.js
  * @include GeoExt/widgets/tree/LayerContainer.js
- * 
+ *
  * @include App/ClickControl.js
  * @include App/UrbanMap.MapPanel.js
  * @include App/UrbanMap.ParcelleGrid.js
@@ -28,7 +28,7 @@ UrbanMap.layout = (function() {
     /*
      * Private
      */
-	
+
 	var map = null;
 
     /**
@@ -46,7 +46,7 @@ UrbanMap.layout = (function() {
             units: "m",
             //numZoomLevels: 13,
             maxResolution: 200,
-            resolutions: [280.0, 140.0, 28.0, 14.0, 5.6, 2.8, 1.4, 0.7, 0.28, 0.21,0.14,0.07],
+            resolutions: [280.0, 140.0, 28.0, 14.0, 5.6, 2.8, 1.4, 0.7, 0.28, 0.21,0.14,0.07, 0.035],
             //resolutions: [42.711898437500054, 21.355949218750027, 10.677974609375013, 5.338987304687507, 2.6694936523437534, 1.3347468261718767, 0.6673734130859383, 0.33368670654296917, 0.16684335327148458, 0.08342167663574229, 0.041710838317871146, 0.020855419158935573],
             //maxExtent: new OpenLayers.Bounds(176643.072,130807.539,187577.318,141741.78500000003),
             maxExtent: new OpenLayers.Bounds(38000,20000,300000,190000),
@@ -81,13 +81,13 @@ UrbanMap.layout = (function() {
      *
      */
     var createLayerStore = function() {
-    	
+
         var recordType = GeoExt.data.LayerRecord.create(
         	GEOB.ows.getRecordFields()
         );
-        
+
         map = createMap();
-        
+
         var ls = new LayerStore({
             map: map,
             sortInfo: {
@@ -96,19 +96,19 @@ UrbanMap.layout = (function() {
             },
             fields: recordType
         });
-        
+
         var layer =  new OpenLayers.Layer("base_layer", {
             displayInLayerSwitcher: false,
             isBaseLayer: true
         });
-        
+
         ls.add([new recordType({
             title: layer.name,
             layer: layer
         }, layer.id)]);
-        
+
         map.addLayers(createLayers());
-	
+
 	    return ls;
     };
 
@@ -124,15 +124,15 @@ UrbanMap.layout = (function() {
             records = filter(records);
             LayerStore.superclass.insert.call(this, index, records);
         }
-    });  
-    
+    });
+
     /**
      * Method: filter
      * Filter the records and set "hideInLegend" in the records
      * when necessary (so the corresponding layers don't appear
      * in the legend panel).
      * Also modifies attribution field if necessary.
-     * Generally speaking, handles every operation needed before 
+     * Generally speaking, handles every operation needed before
      * the records are added to the layerStore.
      *
      * Parameters:
@@ -144,32 +144,32 @@ UrbanMap.layout = (function() {
      */
     var filter = function(records) {
         var errors = [], keep = [];
-        
+
         Ext.each(records, function(r) {
         	//console.log('filtering layer r = '+r.data.name);
             var error = checkLayer(r);
             if (error) {
-                // these are just warnings in fact, not errors 
+                // these are just warnings in fact, not errors
                 // see http://csm-bretagne.fr/redmine/issues/1749
                 errors.push(error);
-            } 
-            
-            // Note: queryable is required in addition to opaque, 
+            }
+
+            // Note: queryable is required in addition to opaque,
             // because opaque is not a standard WMC feature
             // This enables us to remove rasters from legend panel
-            if (r.get("opaque") === true || r.get("queryable") === false) { 
+            if (r.get("opaque") === true || r.get("queryable") === false) {
                 // this record is valid, set its "hideInLegend"
                 // data field to true if the corresponding layer
                 // is a raster layer, i.e. its "opaque" data
                 // field is true
                 r.set("hideInLegend", true);
-                // we set opaque to true so that non queryable 
+                // we set opaque to true so that non queryable
                 // layers are considered as baselayers
                 r.set("opaque", true);
             }
-            // Note that the ultimate solution would be to do a getCapabilities 
+            // Note that the ultimate solution would be to do a getCapabilities
             // request for each OGC server advertised in the WMC
-            
+
             // Format attribution if required:
             var attr = r.get('attribution');
             var layer = r.get('layer');
@@ -185,18 +185,18 @@ UrbanMap.layout = (function() {
                     title: a || 'urbanmap'
                 });
             }
-            
+
             // set layer.metadataURL if record has metadataURLs
             // so that this can be saved in a WMC context
             if (r.get('metadataURLs') && r.get('metadataURLs')[0]) {
                 layer.metadataURL = [r.get('metadataURLs')[0]];
             }
-            
+
             // Errors should be non-blocking since http://csm-bretagne.fr/redmine/issues/1749
             // so we "keep" every layer, and only display a warning message
             keep.push(r);
         });
-        
+
         if (errors.length > 0) {
             GEOB.util.infoDialog({
                 title: 'Avertissement suite au chargement de couche',
@@ -236,31 +236,31 @@ UrbanMap.layout = (function() {
 
         // check if layer extent and map extent match
         if (r.get('llbbox')) {
-            var llbbox = r.get('llbbox'); 
+            var llbbox = r.get('llbbox');
             llbbox = new OpenLayers.Bounds(llbbox[0], llbbox[1], llbbox[2], llbbox[3]);
-            
+
             var mapbbox = map.getMaxExtent().clone();
             mapbbox.transform(
                 map.getProjectionObject(),
                 new OpenLayers.Projection("EPSG:4326")
             );
-            
+
             if (!llbbox.intersectsBounds(mapbbox)) {
                 return prefix + "L'étendue géographique ne correspond pas à celle de la carte.";
             }
         }
     };
-    
-    
+
+
 	var createParcelleVectorLayer = function(map) {
-		
+
 		var defaultStyle = new OpenLayers.Style();
 		var selectStyle = new OpenLayers.Style();
 		var defaultRule = new OpenLayers.Rule({
 			name:'Parcelles'
 			,symbolizer:{
-				fillColor: "#66FF66", 
-			    fillOpacity: .35, 
+				fillColor: "#66FF66",
+			    fillOpacity: .35,
 			    strokeColor: "black",
 		        strokeWidth: 1,
 		        strokeOpacity: 1
@@ -269,23 +269,23 @@ UrbanMap.layout = (function() {
 		var selectRule = new OpenLayers.Rule({
 			name:'Parcelle sélectionnée'
 			,symbolizer:{
-				fillColor: "blue", 
-			    fillOpacity: .35, 
+				fillColor: "blue",
+			    fillOpacity: .35,
 			    strokeColor: "black",
 		        strokeWidth: 1,
 		        strokeOpacity: 1
 			}
-		});		
+		});
 		defaultStyle.addRules([defaultRule]);
 		selectStyle.addRules([selectRule]);
-		
+
     	var parcellesStyle = new OpenLayers.StyleMap({'default': defaultStyle,'select':selectStyle});
-		
+
 		var vecLayer = new OpenLayers.Layer.Vector("Parcelles sélectionnées", {styleMap:parcellesStyle});
 		map.addLayer(vecLayer);
 		return vecLayer;
 	};
-	
+
 	var initQuerier = function()
 	{
 	       /*
@@ -380,7 +380,7 @@ UrbanMap.layout = (function() {
             });
         }
 	};
-	
+
     // this panel serves as the container for
     // the "search results" panel
     var southPanel = new Ext.Panel({
@@ -434,7 +434,7 @@ UrbanMap.layout = (function() {
 				//Override config INS : called by urban
 				UrbanMap.config.INS = urlParameters['INS'];
 			}
-			
+
 			if (typeof(proxyUrl) != "undefined")
 			{
 				UrbanMap.config.proxy_url = proxyUrl;
@@ -449,7 +449,7 @@ UrbanMap.layout = (function() {
             if(!wmcUrlToLoad) {
             	wmcUrlToLoad = urlParameters['WMC'];
             }
-            var layerStore = createLayerStore();    
+            var layerStore = createLayerStore();
             var scaleStore = new GeoExt.data.ScaleStore({map: map});
 			var vecLayer = createParcelleVectorLayer(map);
 			var parcelleGrid = new UrbanMap.ParcelleGrid({
@@ -464,17 +464,17 @@ UrbanMap.layout = (function() {
 				layerStore:layerStore,
 				parcelleGrid:parcelleGrid,
 				vecLayer:vecLayer,
-				scaleStore:scaleStore				
+				scaleStore:scaleStore
 			});
 			if(wmcUrlToLoad) {
             	UrbanMap.WMCReader.init(layerStore);
             	UrbanMap.WMCReader.updateStoreFromWMC(wmcUrlToLoad);
             }
-			
+
 			GEOB.getfeatureinfo.init(map);
 			GEOB.resultspanel.init(map);
 			initQuerier();
-			
+
             new Ext.Viewport({
                 layout: "border",
                 items: [{
@@ -508,13 +508,13 @@ UrbanMap.layout = (function() {
                     }]
                 },southPanel]
             });
-            
+
 
 
             if (typeof(urbanCapakeyArray) != "undefined")
 			{
 				var paramsArray = [];
-				
+
 				var params = {};
 				params.queryable = "codeparcelle";
 				for(var i=0 ; i < urbanCapakeyArray.length ; i++ ) {
@@ -522,8 +522,8 @@ UrbanMap.layout = (function() {
 					params.queryable = "codeparcelle";
 					params.codeparcelle__ilike = urbanCapakeyArray[i];
 					paramsArray.push(params);
-				}	
-				urbanMapPanel.loadAndShowParcels(paramsArray);			
+				}
+				urbanMapPanel.loadAndShowParcels(paramsArray);
 			}
             //map.zoomToExtent(new OpenLayers.Bounds(176643.072,130807.539,187577.318,141741.78500000003));
         }

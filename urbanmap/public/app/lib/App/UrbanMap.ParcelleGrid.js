@@ -272,7 +272,7 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
         var jstsGeomUnion = null;
         var olGeomUnion = null, olGeomUnionBuffer = null;
         this.capakeyToHighlight = [];
-        
+
         //Merge(union) parcels polygons
         this.getStore().each(function(rec){
           var jstsjGeom = parser.read(rec.data.feature.geometry);
@@ -343,7 +343,7 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 
 		var buffLayer = new OpenLayers.Layer.Vector(UrbanMap.config.layer_buffer, {styleMap:bufferStyle});
 		this.map.addLayer(buffLayer);
-		//this.map.setLayerZIndex(buffLayer, 150);
+		this.map.setLayerZIndex(buffLayer, 300);
 		return buffLayer;
 	}
 

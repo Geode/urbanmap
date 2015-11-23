@@ -19,7 +19,7 @@ class ConfigController(BaseController):
         import pylons
         config = pylons.config
         urbanmap_url = "http://89.16.179.114:5000"
-        
+
         try:
             urbanmap_url = config.get('urbanmap_url')
         except:
@@ -30,7 +30,7 @@ class ConfigController(BaseController):
             INS =  config.get('INS')
         except:
             log.info("INS is not set in the configuration, taking default %s" % INS)
-            
+
         configdict = {}
         configdict['result_limit'] = 100
         configdict['buffer_result_limit'] = 500
@@ -44,15 +44,15 @@ class ConfigController(BaseController):
         return resultString
     def wmslist(self):
         import pylons
-        config = pylons.config     
+        config = pylons.config
         INS = '92088'
         try:
             INS =  config.get('INS')
         except:
-            log.info("INS is not set in the configuration, taking default %s" % INS)   
+            log.info("INS is not set in the configuration, taking default %s" % INS)
         result = {}
         result['servers'] = []
-        result['servers'].append({"name": "Catalogue Urban", "url":"http://uvcw-r2-7.all2all.org:8080/geoserver/gwc/service/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=getcapabilities&namespace=urban"+INS})
-        result['servers'].append({"name": "CartoPro PICC","url":"http://cartopro2.wallonie.be/wmspicc/wms110.do&REQUEST=GetCapabilities&VERSION=1.1.0"})
+        result['servers'].append({"name": "Catalogue Geonode", "url":"https://geonode.imio.be/geoserver/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=getcapabilities"})
+        result['servers'].append({"name": "Ortho","url":"http://geoservices.wallonie.be/arcgis/services/IMAGERIE/ORTHO_2012_2013/MapServer/WMSServer?request=GetCapabilities&service=WMS"})
         result['servers'].append({"name": "IMIO - RW","url":"http://geoserver1.communesplone.be/geoserver/gwc/service/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=getcapabilities"})
         return simplejson.dumps(result)

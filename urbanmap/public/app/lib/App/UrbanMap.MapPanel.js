@@ -11,7 +11,7 @@ UrbanMap.MapPanel = Ext.extend(GeoExt.MapPanel, {
     ,layerStore : null
     ,parcelleGrid : null
     ,vecLayer : null
-    
+
     // style the sketch fancy
 	,sketchSymbolizers : {
         "Point": {
@@ -37,12 +37,12 @@ UrbanMap.MapPanel = Ext.extend(GeoExt.MapPanel, {
             fillOpacity: 0.3
          }
     }
-    
+
     // {{{
     ,initComponent:function() {
         // {{{
         this.addLayerWindow = new UrbanMap.WMSCapabilitiesWindow({"mapPanel":this});
-        
+
         Ext.apply(this, {
             // anything here, e.g. items, tools or buttons arrays,
             // cannot be changed from outside
@@ -64,7 +64,7 @@ UrbanMap.MapPanel = Ext.extend(GeoExt.MapPanel, {
             }]
             ,tbar: this.createTbarItems()
         }); // e/o apply
-        
+
         this.map.addControl(new OpenLayers.Control.MousePosition({numDigits:2}));
 
         // }}}
@@ -85,7 +85,7 @@ UrbanMap.MapPanel = Ext.extend(GeoExt.MapPanel, {
         UrbanMap.MapPanel.superclass.onRender.apply(this, arguments);
 
         // after parent code, e.g. install event handlers on rendered components
-        
+
     } // e/o function onRender
     // }}}
     ,createTbarItems : function() {
@@ -225,7 +225,7 @@ UrbanMap.MapPanel = Ext.extend(GeoExt.MapPanel, {
 		        ,scope:this
 		    })
         }));
-        
+/*
         actions.push(new GeoExt.Action({
 	        iconCls: "server_gear",
 	        scope: this,
@@ -242,7 +242,22 @@ UrbanMap.MapPanel = Ext.extend(GeoExt.MapPanel, {
             toggleGroup: "tools",
             allowDepress: false,
 	        tooltip: "Enquête Publique"
-	    }));
+	    })); */
+      actions.push({
+	        iconCls: "server_gear"
+	        ,xtype: 'button'
+	        ,scope: this
+            ,allowDepress: false
+	        ,tooltip: "Enquête publique"
+	        ,listeners : {
+	        	'click' : {
+	        		fn : function(){
+                 this.parcelleGrid.doEnquetePubliqueFull(UrbanMap.config.buffer_width ,UrbanMap.config.buffer_result_limit);
+	        		}
+	        	}
+	        	,scope:this
+	        }
+	    });
         actions.push("-");
 	    actions.push({
 	        iconCls: "add_layer"
@@ -259,7 +274,7 @@ UrbanMap.MapPanel = Ext.extend(GeoExt.MapPanel, {
 	        	,scope:this
 	        }
 	    });
-	    
+
 	     var zoomSelector = new Ext.form.ComboBox({
 	         store: this.scaleStore,
 	         emptyText: "Zoom Level",
@@ -268,15 +283,15 @@ UrbanMap.MapPanel = Ext.extend(GeoExt.MapPanel, {
 	         triggerAction: 'all', // needed so that the combo box doesn't filter by its current content
 	         mode: 'local' // keep the combo box from forcing a lot of unneeded data refreshes
 	     });
-	     zoomSelector.on('select', 
+	     zoomSelector.on('select',
 	    	        function(combo, record, index) {
 	    	            this.map.zoomTo(record.data.level);
 	    	        },
 	    	        this
-	    	    ); 	
+	    	    );
 	     actions.push("-");
 	     actions.push(zoomSelector);
-	     
+
 	     this.map.events.register('zoomend', this, function() {
 	         var scale = this.scaleStore.queryBy(function(record){
 	             return this.map.getZoom() == record.data.level;
@@ -290,10 +305,10 @@ UrbanMap.MapPanel = Ext.extend(GeoExt.MapPanel, {
 	             zoomSelector.clearValue();
 	         }
 	     });
-	     
+
         return actions;
     }
-    
+
     ,loadFeaturesToSelection : function(params){
     	Ext.Ajax.request({
             url : UrbanMap.config.proxy_url + UrbanMap.config.urbanmap_url + '/mapcapas',

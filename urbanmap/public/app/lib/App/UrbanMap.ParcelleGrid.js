@@ -262,6 +262,37 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
     // }}}
 
     // any other added/overrided methods
+    ,doEnquetePubliqueFull : function(width, featuresLimit){
+        if(!jsts) {
+          alert("JSTS Depency is missing");
+          return;
+        }
+        var parser = new jsts.io.OpenLayersParser();
+        var jstsGeomUnion = null;
+        var olGeomUnion = null, olGeomUnionBuffer = null;
+
+        //Merge(union) parcels polygons
+        this.getStore().each(function(rec){
+          var jstsjGeom = parser.read(rec.data.feature.geometry);
+          if(jstsGeomUnion == null) {
+            jstsGeomUnion = jstsjGeom;
+          } else {
+            jstsGeomUnion = jstsGeomUnion.union(jstsjGeom);
+          }
+        },this);
+
+        olGeomUnion = parser.write(jstsGeomUnion);
+        olGeomUnionBuffer = parser.write(jstsGeomUnion.buffer(width));
+
+        //Reload the store with the result of the public survey
+        this.getStore().reload({
+          params:{geometry:jsonGeom,tolerance:width,limit:featuresLimit}
+        });
+
+        //Add the buffer to the map
+        this.map.getLayersByName(UrbanMap.config.layer_buffer)[0].removeAllFeatures();
+        this.map.getLayersByName(UrbanMap.config.layer_buffer)[0].addFeatures(olGeomUnionBuffer);
+    }
     ,doEnquetePublique : function(feature, width, featuresLimit){
     	var geoJSONFormat =  new OpenLayers.Format.GeoJSON();
     	var jsonGeom = geoJSONFormat.write(feature.geometry);

@@ -12,7 +12,7 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
     ,scaleStore:null
     // {{{
     ,initComponent:function() {
-    	
+
 		var store = new GeoExt.data.FeatureStore({
 	        layer: this.vectorLayer,
 	        fields: [
@@ -66,7 +66,7 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 	        	}
 	        }
 	    });
-	    
+
 	    var expander = new Ext.ux.grid.RowExpander({
 	        tpl : new Ext.Template(
 	        	'<table><tbody><tr><td><b>Capakey: </b></td><td>{codeparcelle}</td></tr>',
@@ -100,7 +100,7 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 	  		}
 	  	});
       	this.daStore.load();
-      	
+
         var actionsGrid = new Ext.ux.grid.RowActions({
 			header:'Actions'
 			,keepSelection:true
@@ -119,17 +119,17 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 					,fn : function(grid, record, action, row, col) {
 						if(action == 'information') {
 					    	grid.getSelectionModel().selectRecords([record]);
-					    	this.map.zoomToExtent(record.data.feature.geometry.getBounds());						
+					    	this.map.zoomToExtent(record.data.feature.geometry.getBounds());
 						}
 						if(action == 'server_gear') {
 					    	grid.getSelectionModel().selectRecords([record]);
-				            this.doEnquetePublique(record.data.feature, UrbanMap.config.buffer_width ,UrbanMap.config.buffer_result_limit);						
+				            this.doEnquetePublique(record.data.feature, UrbanMap.config.buffer_width ,UrbanMap.config.buffer_result_limit);
 						}
 					}
 				}
 			}
 		});
-        
+
         // {{{
         Ext.apply(this, {
             // anything here, e.g. items, tools or buttons arrays,
@@ -147,8 +147,8 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 	            width: 165,
 	            dataIndex: "da",
 	            sortable: true,
-	            renderer: function(v, params, record){ 
-	            	return this.daStore.getAt(this.daStore.find('value_field',v)).get('display_field');      
+	            renderer: function(v, params, record){
+	            	return this.daStore.getAt(this.daStore.find('value_field',v)).get('display_field');
 	            },
 	            scope:this
 	        }, {
@@ -200,34 +200,34 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
         // }}}
 
    		this.createBufferVectorLayer();
-   		
+
         // call parent
         UrbanMap.ParcelleGrid.superclass.initComponent.apply(this, arguments);
 
         // after parent code here, e.g. install event handlers
         this.store.on('load', function(store, records, options) {
-        	
+
         	if (records.length >= UrbanMap.config.result_limit) {
         		Ext.Msg.alert(
         				'Veuillez affiner vos critères de recherche',
         				'Le nombre de résultats affiché est limité aux ' + records.length + " premiers."
         		);
         	}
-        	
+
         	var paramsCSV = '?';
         	Ext.iterate(store.lastOptions.params, function(key,value) {
         		if(key != "limit") {
-        			paramsCSV += key+'='+value+'&';
+        			paramsCSV += key+'='+encodeURIComponent(value)+'&';
         		}
         	});
-        	
+
 
         	var urlCSV = UrbanMap.config.urbanmap_url + '/mapcapas/getCSV/getCSV'+paramsCSV;
         	var proxyUrlCSV = UrbanMap.config.proxy_url + urlCSV;
         	urlCSV = urlCSV.replace('\'', ' ');
-        	
+
         	this.setTitle("<a href='"+proxyUrlCSV+"'>Résultats (downloader CSV)</a>");
-        	
+
         	if (this.capakeyToHighlight != null)
         	{
             	var bufferOrigine = null;
@@ -257,10 +257,10 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
         UrbanMap.ParcelleGrid.superclass.onRender.apply(this, arguments);
 
         // after parent code, e.g. install event handlers on rendered components
-        
+
     } // e/o function onRender
     // }}}
-    
+
     // any other added/overrided methods
     ,doEnquetePublique : function(feature, width, featuresLimit){
     	var geoJSONFormat =  new OpenLayers.Format.GeoJSON();
@@ -269,7 +269,7 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
     	this.getStore().reload({
     		params:{geometry:jsonGeom,tolerance:width,limit:featuresLimit}
     	});
-    	
+
     	Ext.Ajax.request({
             url : UrbanMap.config.proxy_url + UrbanMap.config.urbanmap_url + '/mapcapas/buffer/buffer',
             method: 'GET',
@@ -296,8 +296,8 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 		var rule = new OpenLayers.Rule({
 			name:'Buffer'
 			,symbolizer:{
-				fillColor: "#0099FF", 
-			    fillOpacity: .35, 
+				fillColor: "#0099FF",
+			    fillOpacity: .35,
 			    strokeColor: "blue",
 			    strokeWidth: 1.5,
 			    strokeOpacity: 1
@@ -305,7 +305,7 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 		});
 		style.addRules([rule]);
     	var bufferStyle = new OpenLayers.StyleMap({'default': style,'select':style});
-    	
+
 		var buffLayer = new OpenLayers.Layer.Vector(UrbanMap.config.layer_buffer, {styleMap:bufferStyle});
 		this.map.addLayer(buffLayer);
 		//this.map.setLayerZIndex(buffLayer, 150);

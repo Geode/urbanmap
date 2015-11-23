@@ -230,14 +230,14 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 
         	if (this.capakeyToHighlight != null)
         	{
-            	var bufferOrigine = null;
+            	var bufferOrigine = [];
             	this.getStore().each(function(rec){
-            		if (rec.data.codeparcelle == this.capakeyToHighlight)
+            		if (this.capakeyToHighlight.indexOf(rec.data.codeparcelle) >= 0)
             		{
-            			bufferOrigine = rec;
+            			bufferOrigine.push(rec);
             		}
             	},this);
-            	this.getSelectionModel().selectRecords([bufferOrigine]);
+            	this.getSelectionModel().selectRecords(bufferOrigine);
             	this.capakeyToHighlight = null;
         	}
         	else
@@ -267,13 +267,16 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
           alert("JSTS Depency is missing");
           return;
         }
+        var geoJSONFormat =  new OpenLayers.Format.GeoJSON();
         var parser = new jsts.io.OpenLayersParser();
         var jstsGeomUnion = null;
         var olGeomUnion = null, olGeomUnionBuffer = null;
-
+        this.capakeyToHighlight = [];
+        
         //Merge(union) parcels polygons
         this.getStore().each(function(rec){
           var jstsjGeom = parser.read(rec.data.feature.geometry);
+          this.capakeyToHighlight.push(rec.data.codeparcelle);
           if(jstsGeomUnion == null) {
             jstsGeomUnion = jstsjGeom;
           } else {
@@ -283,20 +286,21 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 
         olGeomUnion = parser.write(jstsGeomUnion);
         olGeomUnionBuffer = parser.write(jstsGeomUnion.buffer(width));
+        var jsonGeom = geoJSONFormat.write(olGeomUnion);
 
+        //Add the buffer to the map
+        this.map.getLayersByName(UrbanMap.config.layer_buffer)[0].removeAllFeatures();
+        var feat = new OpenLayers.Feature.Vector(olGeomUnionBuffer);
+        this.map.getLayersByName(UrbanMap.config.layer_buffer)[0].addFeatures([feat]);
         //Reload the store with the result of the public survey
         this.getStore().reload({
           params:{geometry:jsonGeom,tolerance:width,limit:featuresLimit}
         });
-
-        //Add the buffer to the map
-        this.map.getLayersByName(UrbanMap.config.layer_buffer)[0].removeAllFeatures();
-        this.map.getLayersByName(UrbanMap.config.layer_buffer)[0].addFeatures(olGeomUnionBuffer);
     }
     ,doEnquetePublique : function(feature, width, featuresLimit){
     	var geoJSONFormat =  new OpenLayers.Format.GeoJSON();
     	var jsonGeom = geoJSONFormat.write(feature.geometry);
-    	this.capakeyToHighlight = feature.data.codeparcelle;
+    	this.capakeyToHighlight = [feature.data.codeparcelle];
     	this.getStore().reload({
     		params:{geometry:jsonGeom,tolerance:width,limit:featuresLimit}
     	});

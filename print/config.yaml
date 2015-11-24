@@ -72,22 +72,6 @@ layouts:
       keywords: 'map,print,geode,urbanmap'
       creator: 'Geode SPRL'
 
-      footer: &commonFooter
-        height: 30
-        items:
-          - !columns
-            config:
-              cells:
-                - paddingBottom: 5
-            items:
-              - !text
-                backgroundColor: #FFFFFF
-                align: left
-                text: ©Geode SPRL
-              - !text
-                align: right
-                text: 'Page ${pageNum}'
-
     #-------------------------------------------------------------------------
     mainPage:
       pageSize: A3
@@ -152,7 +136,6 @@ layouts:
           fontSize: 9
           align: right
           text: '1:${scale} ${now MM.dd.yyyy}'
-      footer: *commonFooter
 
   #===========================================================================
   A3 landscape:
@@ -163,22 +146,6 @@ layouts:
       subject: 'Simple layout'
       keywords: 'map,print,geode,urbanmap'
       creator: 'Geode SPRL'
-
-      footer: &commonFooter
-        height: 30
-        items:
-          - !columns
-            config:
-              cells:
-                - paddingBottom: 5
-            items:
-              - !text
-                backgroundColor: #FFFFFF
-                align: left
-                text: ©Geode SPRL
-              - !text
-                align: right
-                text: 'Page ${pageNum}'
 
     #-------------------------------------------------------------------------
     mainPage:
@@ -245,7 +212,7 @@ layouts:
           fontSize: 9
           align: right
           text: '1:${scale} ${now MM.dd.yyyy}'
-      footer: *commonFooter
+
 
   #===========================================================================
   A4 landscape:
@@ -256,22 +223,6 @@ layouts:
       subject: 'Simple layout'
       keywords: 'map,print,geode,urbanmap'
       creator: 'Geode SPRL'
-
-      footer: &commonFooter
-        height: 30
-        items:
-          - !columns
-            config:
-              cells:
-                - paddingBottom: 5
-            items:
-              - !text
-                backgroundColor: #FFFFFF
-                align: left
-                text: ©Geode SPRL
-              - !text
-                align: right
-                text: 'Page ${pageNum}'
 
     #-------------------------------------------------------------------------
     mainPage:
@@ -338,7 +289,6 @@ layouts:
           fontSize: 9
           align: right
           text: '1:${scale} ${now MM.dd.yyyy}'
-      footer: *commonFooter
 
   #===========================================================================
   A4 portrait:
@@ -349,22 +299,6 @@ layouts:
       subject: 'Simple layout'
       keywords: 'map,print,geode,urbanmap'
       creator: 'Geode SPRL'
-
-      footer: &commonFooter
-        height: 30
-        items:
-          - !columns
-            config:
-              cells:
-                - paddingBottom: 5
-            items:
-              - !text
-                backgroundColor: #FFFFFF
-                align: left
-                text: ©Geode SPRL
-              - !text
-                align: right
-                text: 'Page ${pageNum}'
 
     #-------------------------------------------------------------------------
     mainPage:
@@ -430,4 +364,3 @@ layouts:
           fontSize: 9
           align: right
           text: '1:${scale} ${now MM.dd.yyyy}'
-      footer: *commonFooter

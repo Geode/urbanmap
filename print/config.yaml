@@ -70,7 +70,7 @@ layouts:
       author: 'UrbanMap print module'
       subject: 'Simple layout'
       keywords: 'map,print,geode,urbanmap'
-      creator: 'Geode SPRL'
+      creator: 'IMIO'
 
     #-------------------------------------------------------------------------
     mainPage:
@@ -78,13 +78,13 @@ layouts:
       rotation: true
       items:
         - !map
-          spacingAfter: 30
+          spacingAfter: 10
           width: 700
           height: 1000
         - !columns
           # columns can have an absolute position. In that case, they need the 3 following fields:
-          absoluteX: 410
-          absoluteY: 310
+          absoluteX: 1000
+          absoluteY: 100
           width: 100
           items:
             - !scalebar
@@ -93,6 +93,11 @@ layouts:
               barBgColor: white
               fontSize: 8
               align: right
+        - !text
+          font: Helvetica
+          fontSize: 9
+          align: right
+          text: '1:${scale} ${now MM.dd.yyyy}'
         - !text
           text: '${comment}'
           spacingAfter: 30
@@ -121,31 +126,17 @@ layouts:
                 items:
                   - !text
                     text: '${name}'
-            icon:
-              columnWeight: 2
-              header: !text
-                text: Symbol
-                backgroundColor: #A0A0A0
-              cell: !image
-                align: center
-                maxWidth: 15
-                maxHeight: 15
-                url: 'http://www.mapfish.org/svn/mapfish/framework/client/trunk/mfbase/mapfish/img/${icon}.png'
-        - !text
-          font: Helvetica
-          fontSize: 9
-          align: right
-          text: '1:${scale} ${now MM.dd.yyyy}'
+
 
   #===========================================================================
-  A3 landscape:
+  A3 paysage:
   #===========================================================================
     metaData:
       title: '${title}'
       author: 'UrbanMap print module'
       subject: 'Simple layout'
       keywords: 'map,print,geode,urbanmap'
-      creator: 'Geode SPRL'
+      creator: 'IMIO'
 
     #-------------------------------------------------------------------------
     mainPage:
@@ -154,13 +145,14 @@ layouts:
       rotation: true
       items:
         - !map
-          spacingAfter: 30
+          spacingAfter: 5
+          spacingBefore: 20
           width: 1000
           height: 700
         - !columns
           # columns can have an absolute position. In that case, they need the 3 following fields:
-          absoluteX: 410
-          absoluteY: 310
+          absoluteX: 1000
+          absoluteY: 150
           width: 100
           items:
             - !scalebar
@@ -170,11 +162,16 @@ layouts:
               fontSize: 8
               align: right
         - !text
+          font: Helvetica
+          fontSize: 9
+          align: right
+          text: '1:${scale} ${now MM.dd.yyyy}'
+        - !text
           text: '${comment}'
-          spacingAfter: 30
+          spacingAfter: 10
         - !attributes
           source: data
-          spacingAfter: 30
+          spacingAfter: 10
           columnDefs:
             id:
               columnWeight: 2
@@ -197,21 +194,7 @@ layouts:
                 items:
                   - !text
                     text: '${name}'
-            icon:
-              columnWeight: 2
-              header: !text
-                text: Symbol
-                backgroundColor: #A0A0A0
-              cell: !image
-                align: center
-                maxWidth: 15
-                maxHeight: 15
-                url: 'http://www.mapfish.org/svn/mapfish/framework/client/trunk/mfbase/mapfish/img/${icon}.png'
-        - !text
-          font: Helvetica
-          fontSize: 9
-          align: right
-          text: '1:${scale} ${now MM.dd.yyyy}'
+
 
 
   #===========================================================================
@@ -222,7 +205,7 @@ layouts:
       author: 'UrbanMap print module'
       subject: 'Simple layout'
       keywords: 'map,print,geode,urbanmap'
-      creator: 'Geode SPRL'
+      creator: 'IMIO'
 
     #-------------------------------------------------------------------------
     mainPage:
@@ -231,13 +214,13 @@ layouts:
       rotation: true
       items:
         - !map
-          spacingAfter: 30
-          width: 483
-          height: 440
+          spacingAfter: 5
+          width: 750
+          height: 500
         - !columns
           # columns can have an absolute position. In that case, they need the 3 following fields:
-          absoluteX: 410
-          absoluteY: 310
+          absoluteX: 700
+          absoluteY: 100
           width: 100
           items:
             - !scalebar
@@ -247,11 +230,16 @@ layouts:
               fontSize: 8
               align: right
         - !text
+          font: Helvetica
+          fontSize: 9
+          align: right
+          text: '1:${scale} ${now MM.dd.yyyy}'
+        - !text
           text: '${comment}'
-          spacingAfter: 30
+          spacingAfter: 5
         - !attributes
           source: data
-          spacingAfter: 30
+          spacingAfter: 0
           columnDefs:
             id:
               columnWeight: 2
@@ -274,21 +262,7 @@ layouts:
                 items:
                   - !text
                     text: '${name}'
-            icon:
-              columnWeight: 2
-              header: !text
-                text: Symbol
-                backgroundColor: #A0A0A0
-              cell: !image
-                align: center
-                maxWidth: 15
-                maxHeight: 15
-                url: 'http://www.mapfish.org/svn/mapfish/framework/client/trunk/mfbase/mapfish/img/${icon}.png'
-        - !text
-          font: Helvetica
-          fontSize: 9
-          align: right
-          text: '1:${scale} ${now MM.dd.yyyy}'
+
 
   #===========================================================================
   A4 portrait:
@@ -298,7 +272,7 @@ layouts:
       author: 'UrbanMap print module'
       subject: 'Simple layout'
       keywords: 'map,print,geode,urbanmap'
-      creator: 'Geode SPRL'
+      creator: 'IMIO'
 
     #-------------------------------------------------------------------------
     mainPage:
@@ -307,12 +281,12 @@ layouts:
       items:
         - !map
           spacingAfter: 30
-          width: 440
-          height: 483
+          width: 483
+          height: 700
         - !columns
           # columns can have an absolute position. In that case, they need the 3 following fields:
           absoluteX: 410
-          absoluteY: 310
+          absoluteY: 150
           width: 100
           items:
             - !scalebar
@@ -322,11 +296,16 @@ layouts:
               fontSize: 8
               align: right
         - !text
+          font: Helvetica
+          fontSize: 9
+          align: right
+          text: '1:${scale} ${now MM.dd.yyyy}'
+        - !text
           text: '${comment}'
-          spacingAfter: 30
+          spacingAfter: 5
         - !attributes
           source: data
-          spacingAfter: 30
+          spacingAfter: 5
           columnDefs:
             id:
               columnWeight: 2
@@ -359,8 +338,3 @@ layouts:
                 maxWidth: 15
                 maxHeight: 15
                 url: 'http://www.mapfish.org/svn/mapfish/framework/client/trunk/mfbase/mapfish/img/${icon}.png'
-        - !text
-          font: Helvetica
-          fontSize: 9
-          align: right
-          text: '1:${scale} ${now MM.dd.yyyy}'

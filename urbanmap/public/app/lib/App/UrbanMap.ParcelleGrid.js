@@ -214,7 +214,7 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
         		);
         	}
 
-        	var paramsCSV = '?';
+        	var paramsCSV = '&';
         	Ext.iterate(store.lastOptions.params, function(key,value) {
         		if(key != "limit") {
         			paramsCSV += key+'='+encodeURIComponent(value)+'&';

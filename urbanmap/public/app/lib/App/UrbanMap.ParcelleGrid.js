@@ -226,7 +226,7 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
         	var proxyUrlCSV = UrbanMap.config.proxy_url + urlCSV;
         	urlCSV = urlCSV.replace('\'', ' ');
 
-        	this.setTitle("<a href='"+proxyUrlCSV+"'>Résultats (downloader CSV)</a>");
+        	this.setTitle("<a download='resultat.csv' href='"+proxyUrlCSV+"'>Résultats (downloader CSV)</a>");
 
         	if (this.capakeyToHighlight != null)
         	{

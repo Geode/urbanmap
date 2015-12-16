@@ -52,7 +52,7 @@ class ConfigController(BaseController):
             log.info("INS is not set in the configuration, taking default %s" % INS)
         result = {}
         result['servers'] = []
-        result['servers'].append({"name": "Catalogue Geonode", "url":"https://geonode.imio.be/geoserver/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=getcapabilities"})
-        result['servers'].append({"name": "Ortho","url":"http://geoservices.wallonie.be/arcgis/services/IMAGERIE/ORTHO_2012_2013/MapServer/WMSServer?request=GetCapabilities&service=WMS"})
-        result['servers'].append({"name": "IMIO - RW","url":"http://geoserver1.communesplone.be/geoserver/gwc/service/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=getcapabilities"})
+        result['servers'].append({"name": "Catalogue Geonode", "url":"https://geonode.imio.be/geoserver/wms&SERVICE=WMS&VERSION=1.1.1&REQUEST=getcapabilities"})
+        result['servers'].append({"name": "Ortho","url":"http://geoservices.wallonie.be/arcgis/services/IMAGERIE/ORTHO_2012_2013/MapServer/WMSServer&request=GetCapabilities&service=WMS"})
+        result['servers'].append({"name": "IMIO - RW","url":"http://geoserver1.communesplone.be/geoserver/gwc/service/wms&SERVICE=WMS&VERSION=1.1.1&REQUEST=getcapabilities"})
         return simplejson.dumps(result)

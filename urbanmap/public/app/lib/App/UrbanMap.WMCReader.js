@@ -121,7 +121,7 @@ UrbanMap.WMCReader = (function() {
             );
         },
 
-        
+
         /**
 	     * Method: updateStoreFromWMC
 	     * Updates the app LayerStore from a given WMC
@@ -177,7 +177,7 @@ UrbanMap.WMCReader = (function() {
             var map = layerStore.map;
             var newContext = wmcFormat.read(wmcString, {}); // get context from wmc
                                                          // using non-API feature
-            
+
             if(map.getProjection() && (newContext.projection !== map.getProjection())) {
                 // bounding box from wmc does not have the same projection system
                 // as the current map
@@ -191,7 +191,7 @@ UrbanMap.WMCReader = (function() {
                         "rÃ©fÃ©rence spatiale est diffÃ©rent de celui de la carte en cours.");
                 return;
             }
-			
+
             // remove all current layers except the lowest index one
             // (our fake base layer)
             /*
@@ -209,7 +209,7 @@ UrbanMap.WMCReader = (function() {
                 // restore metadataURLs in record
                 var context = null;
                 for (var i=0, l = newContext.layersContext.length; i<l; i++) {
-                    if (newContext.layersContext[i]['name'] === r.get('name') && 
+                    if (newContext.layersContext[i]['name'] === r.get('name') &&
                         newContext.layersContext[i]['url'] === r.get('layer').url) {
                         context = newContext.layersContext[i];
                         break;

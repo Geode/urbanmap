@@ -8,9 +8,19 @@ UrbanMap.ParamForm = Ext.extend(Ext.form.FormPanel, {
      border:false
      ,maxNumberOfResult:1000
      ,minNumberOfResult:50
+     ,BUFFER_WIDTH_KEY :"buffer_width"
+     ,RESULT_LIMIT_KEY :"result_limit"
 
     // {{{
     ,initComponent:function() {
+        var local_buffer_width = this.getLocalSetting(this.BUFFER_WIDTH_KEY);
+        if(local_buffer_width){
+          UrbanMap.config.buffer_width = local_buffer_width;
+        }
+        var local_result_limit = this.getLocalSetting(this.RESULT_LIMIT_KEY);
+        if(local_result_limit){
+          UrbanMap.config.result_limit = local_result_limit;
+        }
         // {{{
         Ext.apply(this, {
             // anything here, e.g. items, tools or buttons arrays,
@@ -68,6 +78,8 @@ UrbanMap.ParamForm = Ext.extend(Ext.form.FormPanel, {
 		var myForm = this.getForm();
 		var buffer = myForm.findField("buffer").getValue();
 		UrbanMap.config.buffer_width = buffer;
+    this.setLocalSetting(this.BUFFER_WIDTH_KEY,buffer);
+
 		var resultlimit = myForm.findField("resultlimit").getValue();
 		if (resultlimit > this.maxNumberOfResult)
 		{
@@ -82,7 +94,8 @@ UrbanMap.ParamForm = Ext.extend(Ext.form.FormPanel, {
 
 		}
 		UrbanMap.config.result_limit = resultlimit;
-
+    this.setLocalSetting(this.RESULT_LIMIT_KEY, resultlimit);
+    
     	Ext.Msg.show({
             title: 'Configuration des parmètres',
             msg: 'paramètres enregistrés',
@@ -97,6 +110,20 @@ UrbanMap.ParamForm = Ext.extend(Ext.form.FormPanel, {
 		this.getForm().reset();
 		this.setParameters();
 	}
+  ,getLocalSetting : function(key_name) {
+    if(typeof(Storage) !== "undefined") {
+      return localStorage.getItem(key_name);
+    } else {
+      return null;
+    }
+  }
+  ,setLocalSetting : function(key_name, value) {
+    if(typeof(Storage) !== "undefined") {
+      return localStorage.setItem(key_name, value);
+    } else {
+      return null;
+    }
+  }
 
 }); // e/o extend
 

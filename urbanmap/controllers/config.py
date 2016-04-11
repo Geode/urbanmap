@@ -21,20 +21,32 @@ class ConfigController(BaseController):
         urbanmap_url = "http://89.16.179.114:5000"
 
         try:
-            urbanmap_url = config.get('urbanmap_url')
+            urbanmap_url = config.get('urbanmap_url',urbanmap_url)
         except:
             log.info("urbanmap_url not set in configuration, taking default %s" % urbanmap_url)
 
         INS = '92088'
         try:
-            INS =  config.get('INS')
+            INS =  config.get('INS',INS)
         except:
             log.info("INS is not set in the configuration, taking default %s" % INS)
 
+        result_limit = '100'
+        try:
+            result_limit =  config.get('result_limit',result_limit)
+        except:
+            log.info("result_limit is not set in the configuration, taking default %s" % result_limit)
+
+        buffer_width = '50'
+        try:
+            buffer_width =  config.get('buffer_width',buffer_width)
+        except:
+            log.info("buffer_width is not set in the configuration, taking default %s" % buffer_width)
+
         configdict = {}
-        configdict['result_limit'] = 100
+        configdict['result_limit'] = result_limit
         configdict['buffer_result_limit'] = 500
-        configdict['buffer_width'] = 50
+        configdict['buffer_width'] = buffer_width
         configdict['layer_buffer'] = 'Buffer'
         configdict['proxy_url'] = '/proxy/get?url='
         configdict['urbanmap_url'] = urbanmap_url

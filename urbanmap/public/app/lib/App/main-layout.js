@@ -526,14 +526,7 @@ UrbanMap.layout = (function() {
                 	region: "center",
                 	layout: "border",
                 	items : [
-                	 {
-                	 	xtype: 'urbanmappanel',
-                	 	map:map,
-										layerStore:layerStore,
-										parcelleGrid:parcelleGrid,
-										vecLayer:vecLayer,
-										scaleStore:scaleStore
-                	 }
+                	   urbanMapPanel
 										,parcelleGrid
                 	]
                 },{

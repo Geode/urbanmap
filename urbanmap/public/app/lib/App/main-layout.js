@@ -430,50 +430,95 @@ UrbanMap.layout = (function() {
          */
         init: function() {
             var urlParameters = OpenLayers.Util.getParameters();
-			if(urlParameters['INS']) {
-				//Override config INS : called by urban
-				UrbanMap.config.INS = urlParameters['INS'];
-			}
+						if(urlParameters['INS']) {
+							//Override config INS : called by urban
+							UrbanMap.config.INS = urlParameters['INS'];
+						}
 
-			if (typeof(proxyUrl) != "undefined")
-			{
-				UrbanMap.config.proxy_url = proxyUrl;
-			}
-			//OpenLayers.ProxyHost = UrbanMap.config.proxy_url;
-			var wmcUrlToLoad = null;
-            if (typeof(urbanMapWMCUrl) != "undefined")
-			{
-				wmcUrlToLoad = urbanMapWMCUrl;
-				OpenLayers.ProxyHost = '';
-			}
+						if (typeof(proxyUrl) != "undefined")
+						{
+							UrbanMap.config.proxy_url = proxyUrl;
+						}
+						//OpenLayers.ProxyHost = UrbanMap.config.proxy_url;
+						var wmcUrlToLoad = null;
+			            if (typeof(urbanMapWMCUrl) != "undefined")
+						{
+							wmcUrlToLoad = urbanMapWMCUrl;
+							OpenLayers.ProxyHost = '';
+						}
             if(!wmcUrlToLoad) {
             	wmcUrlToLoad = urlParameters['WMC'];
             }
+
             var layerStore = createLayerStore();
             var scaleStore = new GeoExt.data.ScaleStore({map: map});
-			var vecLayer = createParcelleVectorLayer(map);
-			var parcelleGrid = new UrbanMap.ParcelleGrid({
-				vectorLayer:vecLayer,
-				map:map,
-				height: 200,
-				collapsed: false,
-				collapsible: true
-			});
-			var urbanMapPanel = new UrbanMap.MapPanel({
-                map:map,
-				layerStore:layerStore,
-				parcelleGrid:parcelleGrid,
-				vecLayer:vecLayer,
-				scaleStore:scaleStore
-			});
-			if(wmcUrlToLoad) {
+						var vecLayer = createParcelleVectorLayer(map);
+						var parcelleGrid = new UrbanMap.ParcelleGrid({
+							vectorLayer:vecLayer,
+							map:map,
+							height: 200,
+							collapsed: false,
+							collapsible: true
+						});
+						var btnGetCarteIdentiteParcellaire = new Ext.Button({
+									allowDepress: false,
+									tooltip: "Carte d'identite parcellaire",
+									iconCls: "fullextent",
+									listeners: {
+										'click' : {
+											fn : function() {
+												var selectedCapakeys = [];
+
+												parcelleGrid.getStore().each(function(rec){
+													selectedCapakeys.push(rec.data.fid);
+												},this);
+
+												Ext.Ajax.request({
+														url : 'parcelsinfo',
+														params: {capakey: selectedCapakeys},
+														method: 'GET',
+														scope: this,
+														success: function(result, request) {
+
+															var parcelleWin = new Ext.Window({
+																title: "Carte d'identité",
+																width: 400,
+																height: 400,
+																autoScroll: true,
+																items: [{
+																	border: false,
+																	autoScroll: true,
+																	html : result.responseText
+																}]
+															});
+															parcelleWin.show();
+														},
+														failure : function(result, request) {
+															console.log(result);
+														}
+												});
+											}
+											,scope : this
+										}
+									}
+							});
+						var urbanMapPanel = new UrbanMap.MapPanel({
+			        map:map,
+							layerStore:layerStore,
+							parcelleGrid:parcelleGrid,
+							vecLayer:vecLayer,
+							scaleStore:scaleStore
+						});
+						var topMapPanelToolbar = urbanMapPanel.getTopToolbar();
+						topMapPanelToolbar.addButton(btnGetCarteIdentiteParcellaire);
+						if(wmcUrlToLoad) {
             	UrbanMap.WMCReader.init(layerStore);
             	UrbanMap.WMCReader.updateStoreFromWMC(wmcUrlToLoad);
             }
 
-			GEOB.getfeatureinfo.init(map);
-			GEOB.resultspanel.init(map);
-			initQuerier();
+						GEOB.getfeatureinfo.init(map);
+						GEOB.resultspanel.init(map);
+						initQuerier();
 
             new Ext.Viewport({
                 layout: "border",
@@ -481,15 +526,8 @@ UrbanMap.layout = (function() {
                 	region: "center",
                 	layout: "border",
                 	items : [
-                	 {
-                	 	xtype: 'urbanmappanel',
-                	 	map:map,
-						layerStore:layerStore,
-						parcelleGrid:parcelleGrid,
-						vecLayer:vecLayer,
-						scaleStore:scaleStore
-                	 }
-					,parcelleGrid
+                	   urbanMapPanel
+										,parcelleGrid
                 	]
                 },{
                     region: "west",
@@ -509,23 +547,20 @@ UrbanMap.layout = (function() {
                 },southPanel]
             });
 
-
-
             if (typeof(urbanCapakeyArray) != "undefined")
-			{
-				var paramsArray = [];
+						{
+							var paramsArray = [];
 
-				var params = {};
-				params.queryable = "codeparcelle";
-				for(var i=0 ; i < urbanCapakeyArray.length ; i++ ) {
-					var params = {};
-					params.queryable = "codeparcelle";
-					params.codeparcelle__ilike = urbanCapakeyArray[i];
-					paramsArray.push(params);
-				}
-				urbanMapPanel.loadAndShowParcels(paramsArray);
-			}
-            //map.zoomToExtent(new OpenLayers.Bounds(176643.072,130807.539,187577.318,141741.78500000003));
+							var params = {};
+							params.queryable = "codeparcelle";
+							for(var i=0 ; i < urbanCapakeyArray.length ; i++ ) {
+								var params = {};
+								params.queryable = "codeparcelle";
+								params.codeparcelle__ilike = urbanCapakeyArray[i];
+								paramsArray.push(params);
+							}
+							urbanMapPanel.loadAndShowParcels(paramsArray);
+						}
         }
     };
 })();

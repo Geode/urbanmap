@@ -58,6 +58,11 @@
     height:20px !important;
     width:20px !important;
 }
+.folder_explore {
+    background-image:url(../img/folder_explore.png) !important;
+    height:20px !important;
+    width:20px !important;
+}
 /* For TreePanel */
 .legend {
     padding-left: 18px;
@@ -238,4 +243,3 @@
 .layer-editing-panel .x-form-item-label span {
 	cursor: pointer;
 }
-

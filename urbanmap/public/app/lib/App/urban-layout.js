@@ -247,7 +247,7 @@ UrbanMap.layout = (function() {
 			var btnGetCarteIdentiteParcellaire = new Ext.Button({
 		        allowDepress: false,
 		        tooltip: "Carte d'identite parcellaire",
-		        iconCls: "fullextent",
+		        iconCls: "folder_explore",
 		        listeners: {
 		        	'click' : {
 		        		fn : function() {

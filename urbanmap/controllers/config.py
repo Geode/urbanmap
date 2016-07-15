@@ -66,5 +66,5 @@ class ConfigController(BaseController):
         result['servers'] = []
         result['servers'].append({"name": "Catalogue Geonode", "url":"https://geonode.imio.be/geoserver/wms&SERVICE=WMS&VERSION=1.1.1&REQUEST=getcapabilities"})
         result['servers'].append({"name": "Ortho","url":"http://geoservices.wallonie.be/arcgis/services/IMAGERIE/ORTHO_LAST/MapServer/WMSServer&request=GetCapabilities&service=WMS&VERSION=1.1.1"})
-        result['servers'].append({"name": "PICC","url":"http://geoservices.wallonie.be/arcgis/services/TOPOGRAPHIE/PICC/MapServer/WMSServer&request=GetCapabilities&service=WMS&VERSION=1.1.1"})
+        result['servers'].append({"name": "PICC","url":"http://geoservices.wallonie.be/arcgis/services/TOPOGRAPHIE/PICC_VDIFF/MapServer/WMSServer&request=GetCapabilities&service=WMS&VERSION=1.1.1"})
         return simplejson.dumps(result)

@@ -347,6 +347,7 @@ UrbanMap.MapPanel = Ext.extend(GeoExt.MapPanel, {
 	                 var featuresCollection = geoJSONFormat.read(result.responseText);
 	                 var results = this.parcelleGrid.getStore().reader.readRecords(featuresCollection);
 	                 this.parcelleGrid.getStore().add(results.records);
+                     this.parcelleGrid.zoomToStoreExtent();
 	            },
 	            failure: function ( result, request ) {
 	                 var jsonData = Ext.util.JSON.decode(result.responseText);

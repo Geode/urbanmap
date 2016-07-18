@@ -346,6 +346,30 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 		this.map.setLayerZIndex(buffLayer, 300);
 		return buffLayer;
 	}
+    ,zoomToStoreExtent : function() {
+        if(!jsts) {
+          console.log("JSTS Depency is missing");
+          return;
+        }
+        var parser = new jsts.io.OpenLayersParser();
+        var jstsGeomUnion = null;
+        var olGeomUnion = null, olGeomUnionBuffer = null;
+        this.capakeyToHighlight = [];
+        //Merge(union) parcels polygons
+        this.getStore().each(function(rec){
+          var jstsjGeom = parser.read(rec.data.feature.geometry);
+          this.capakeyToHighlight.push(rec.data.codeparcelle);
+          if(jstsGeomUnion == null) {
+            jstsGeomUnion = jstsjGeom;
+          } else {
+            jstsGeomUnion = jstsGeomUnion.union(jstsjGeom);
+          }
+        },this);
+        if(jstsGeomUnion != null){
+            olGeomUnion = parser.write(jstsGeomUnion);
+            this.map.zoomToExtent(olGeomUnion.getBounds());
+        }
+    }
 
 }); // e/o extend
 

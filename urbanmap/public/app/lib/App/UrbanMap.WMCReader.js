@@ -187,9 +187,21 @@ UrbanMap.WMCReader = (function() {
                         "rÃ©fÃ©rence spatiale est diffÃ©rent de celui de la carte en cours."
                 });
                 * */
-                alert("Le fichier .wmc ne peut pas Ãªtre restaurÃ©. Son systÃ¨me de " +
-                        "rÃ©fÃ©rence spatiale est diffÃ©rent de celui de la carte en cours.");
-                return;
+                if(proj4 && proj4(newContext.projection)) {
+                    var oBounds = newContext.bounds;
+                    var oleftBottom = [oBounds.left,oBounds.bottom];
+                    var orightTop = [oBounds.right,oBounds.top];
+                    var nLeftBottom = proj4(newContext.projection,map.getProjection(),oleftBottom);
+                    var nRightTop = proj4(newContext.projection,map.getProjection(),orightTop);
+                    newContext.bounds.left = nLeftBottom[0];
+                    newContext.bounds.bottom = nLeftBottom[1];
+                    newContext.bounds.right = nRightTop[0];
+                    newContext.bounds.top = nRightTop[1];
+                } else {
+                    alert("Le fichier .wmc ne peut pas être restauré. Son systême de " +
+                            "référence spatiale est diffèrent de celui de la carte en cours.");
+                    return;
+                }
             }
 
             // remove all current layers except the lowest index one
@@ -211,6 +223,10 @@ UrbanMap.WMCReader = (function() {
                 for (var i=0, l = newContext.layersContext.length; i<l; i++) {
                     if (newContext.layersContext[i]['name'] === r.get('name') &&
                         newContext.layersContext[i]['url'] === r.get('layer').url) {
+                        var layer = r.get('layer');
+                        if(layer.params && typeof layer.params.TRANSPARENT === 'undefined') {
+                            layer.params.TRANSPARENT = 'TRUE';
+                        }
                         context = newContext.layersContext[i];
                         break;
                     }

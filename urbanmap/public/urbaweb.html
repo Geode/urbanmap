@@ -88,13 +88,14 @@
 
     <script type="text/javascript" src="lib/jsts/javascript.util.min.js"></script>
     <script type="text/javascript" src="lib/jsts/jsts.min.js"></script>
-
+    <script type="text/javascript" src="lib/proj4js/proj4.js"></script>
+    <script type="text/javascript" src="lib/proj4js/EPSG31370.js"></script>
     <script type="text/javascript">document.getElementById('loading-msg').innerHTML = "Chargement de la configuration...";</script>
     <!-- The script below will load the configuration of the application -->
     <script type="text/javascript" src="/Oofee1iGKo6sahh6Eijis4AhUe1eexai/config/index"></script>
    <script type="text/javascript">
 UrbanMap.config.proxy_url = "";
-   </script> 
+   </script>
     <!-- The script below will load the capabilities of the print service
          and save them into the global printCapabilities variable. Instead
          of this, the PrintProvider can be configured with a url and take
@@ -130,7 +131,7 @@ UrbanMap.config.proxy_url = "";
     <script type="text/javascript" src="app/lib/App/UrbanMap.UrbanLayerNode.js"></script>
 
     <script type="text/javascript">
-	var NISNum='63023';var urbanCapakeyArray=[];var urbanMapWMCUrl='https://geonode.imio.be/maps/593/wmc';
+	var NISNum='63023';var urbanCapakeyArray=[];var urbanMapWMCUrl='/Oofee1iGKo6sahh6Eijis4AhUe1eexai/proxy/get?url=https://geonode.imio.be/maps/593/wmc';
     </script>
     <script type="text/javascript">document.getElementById('loading-msg').innerHTML = "Initialisation...";</script>
     <script type="text/javascript" src="app/lib/App/main-layout.js"></script>

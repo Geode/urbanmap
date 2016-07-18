@@ -511,14 +511,12 @@ UrbanMap.layout = (function() {
 						});
 						var topMapPanelToolbar = urbanMapPanel.getTopToolbar();
 						topMapPanelToolbar.addButton(btnGetCarteIdentiteParcellaire);
-						if(wmcUrlToLoad) {
-            	UrbanMap.WMCReader.init(layerStore);
-            	UrbanMap.WMCReader.updateStoreFromWMC(wmcUrlToLoad);
-            }
 
-						GEOB.getfeatureinfo.init(map);
-						GEOB.resultspanel.init(map);
-						initQuerier();
+
+
+			GEOB.getfeatureinfo.init(map);
+			GEOB.resultspanel.init(map);
+			initQuerier();
 
             new Ext.Viewport({
                 layout: "border",
@@ -547,20 +545,29 @@ UrbanMap.layout = (function() {
                 },southPanel]
             });
 
-            if (typeof(urbanCapakeyArray) != "undefined")
-						{
-							var paramsArray = [];
+            var zoomToCapakeysFn = function() {
+                if (typeof(urbanCapakeyArray) != "undefined")
+    			{
+    				var paramsArray = [];
+    				var params = {};
+    				params.queryable = "codeparcelle";
+    				for(var i=0 ; i < urbanCapakeyArray.length ; i++ ) {
+    					var params = {};
+    					params.queryable = "codeparcelle";
+    					params.codeparcelle__ilike = urbanCapakeyArray[i];
+    					paramsArray.push(params);
+    				}
+    			    urbanMapPanel.loadAndShowParcels(paramsArray);
+    			}
+            };
 
-							var params = {};
-							params.queryable = "codeparcelle";
-							for(var i=0 ; i < urbanCapakeyArray.length ; i++ ) {
-								var params = {};
-								params.queryable = "codeparcelle";
-								params.codeparcelle__ilike = urbanCapakeyArray[i];
-								paramsArray.push(params);
-							}
-							urbanMapPanel.loadAndShowParcels(paramsArray);
-						}
+            if(wmcUrlToLoad) {
+            	UrbanMap.WMCReader.init(layerStore);
+            	UrbanMap.WMCReader.updateStoreFromWMC(wmcUrlToLoad,true,zoomToCapakeysFn);
+            }
+
+
+
         }
     };
 })();

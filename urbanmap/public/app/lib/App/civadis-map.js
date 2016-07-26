@@ -26,9 +26,12 @@ Ext.namespace("UrbanMap");
         var parcelles = pageParameters.idParcelle instanceof Array ? pageParameters.idParcelle : [pageParameters.idParcelle];
         var licences  = pageParameters.idPermis instanceof Array ? pageParameters.idPermis : [pageParameters.idPermis];
         var ins = pageParameters.ins;
-
-        NISNum = ins;
-        urbanCapakeyArray = parcelles;
+        if(ins) {
+            NISNum = ins;
+        }
+        if(parcelles) {
+            urbanCapakeyArray = parcelles;
+        }
         //TODO Do something with licences
 
     	UrbanMap.layout.init();

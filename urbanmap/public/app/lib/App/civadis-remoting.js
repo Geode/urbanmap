@@ -29,7 +29,7 @@ Civadis.remoting = (function() {
         payload_template = payload_template.replace('{{code_ins}}',codeINS);
         payload_template = payload_template.replace('{{capa_key}}',matriceCadastrale);
         Ext.Ajax.request({
-            url: 'http://192.168.8.5:8080/permis/services/CartoServices',
+            url: 'http://192.168.8.5/permis/services/CartoServices',
             method: 'POST',
             headers : {
                 'Content-Type': 'text/xml',

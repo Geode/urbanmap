@@ -54,8 +54,7 @@ Civadis.remoting = (function() {
             method: 'GET',
             success : function(result, request) {
               console.log('success echo');
-              console.log(result);
-              console.log(request);
+              console.log(result.responseText);
             },
             failure: function(message){
                 console.log('failure echo');
@@ -66,7 +65,7 @@ Civadis.remoting = (function() {
         parcelsinfos : function(codeINS,matriceCadastrale) {
           ///permis/app/rest/carto/findPermisList?codeINS=${codeINS}&matriceCadastrale=${matriceCadastrale}
           Ext.Ajax.request({
-            url: 'http://192.168.8.5/permis/app/rest/carto/findPermisList?codeINS='+message+'&matriceCadastrale='+ matriceCadastrale,
+            url: 'http://192.168.8.5/permis/app/rest/carto/findPermisList?codeINS='+codeINS+'&matriceCadastrale='+ matriceCadastrale,
             method: 'GET',
             success : function(result, request) {
               console.log('success findPermisList');

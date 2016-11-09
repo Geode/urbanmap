@@ -47,22 +47,49 @@ Civadis.remoting = (function() {
      * Public
      */
     return {
+        echo : function(message) {
+          //http://SERVER:PORT/permis/app/rest/carto/echo?name=Jean
+          Ext.Ajax.request({
+            url: 'http://192.168.8.5/permis/app/rest/carto/echo?name='+message,
+            method: 'GET',
+            success : function(result, request) {
+              console.log('success echo');
+              console.log(result);
+              console.log(request);
+            },
+            failure: function(message){
+                console.log('failure echo');
+                console.log(message);
+            }
+          });
+        },
         parcelsinfos : function(codeINS,matriceCadastrale) {
-            findPermisList(codeINS,matriceCadastrale, function(result, request) {
-                console.log("Yolo");
-                var parcelleWin = new Ext.Window({
-                    title: "Carte d'identité",
-                    width: 400,
-                    height: 400,
-                    autoScroll: true,
-                    items: [{
-                        border: false,
-                        autoScroll: true,
-                        html : result.responseText
-                    }]
-                });
-                parcelleWin.show();
-            });
+          ///permis/app/rest/carto/findPermisList?codeINS=${codeINS}&matriceCadastrale=${matriceCadastrale}
+          Ext.Ajax.request({
+            url: 'http://192.168.8.5/permis/app/rest/carto/findPermisList?codeINS='+message+'&matriceCadastrale='+ matriceCadastrale,
+            method: 'GET',
+            success : function(result, request) {
+              console.log('success findPermisList');
+              console.log(result);
+              console.log(request);
+              var parcelleWin = new Ext.Window({
+                  title: "Carte d'identité",
+                  width: 400,
+                  height: 400,
+                  autoScroll: true,
+                  items: [{
+                      border: false,
+                      autoScroll: true,
+                      html : result.responseText
+                  }]
+              });
+              parcelleWin.show();
+            },
+            failure: function(message){
+                console.log('failure findPermisList');
+                console.log(message);
+            }
+          });
         }
     };
 })();

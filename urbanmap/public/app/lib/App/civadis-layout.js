@@ -474,7 +474,20 @@ UrbanMap.layout = (function() {
 								selectedCapakeys.push(rec.data.fid);
 							},this);
 
-                           Civadis.remoting.parcelsinfos(NISNum,selectedCapakeys);
+              Civadis.remoting.parcelsinfos(NISNum,selectedCapakeys);
+						}
+						,scope : this
+					 }
+				}
+			});
+			var btnEcho = new Ext.Button({
+				allowDepress: false,
+				tooltip: "Echo",
+				iconCls: "folder_explore",
+				listeners: {
+					'click' : {
+						fn : function() {
+							Civadis.remoting.echo("test");
 						}
 						,scope : this
 					 }
@@ -489,7 +502,8 @@ UrbanMap.layout = (function() {
 			});
 			var topMapPanelToolbar = urbanMapPanel.getTopToolbar();
 			topMapPanelToolbar.addButton(btnGetCarteIdentiteParcellaire);
-
+			topMapPanelToolbar.addButton(btnEcho);
+			
 			GEOB.getfeatureinfo.init(map);
 			GEOB.resultspanel.init(map);
 			initQuerier();

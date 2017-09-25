@@ -43,6 +43,21 @@ Civadis.remoting = (function() {
             }
         });
     };
+
+    var getPermisInfos = function(codeINS, permisID) {
+      Ext.Ajax.request({
+        url: 'http://192.168.8.5/permis/app/rest/carto/findAttributsPermis?codeINS='+codeINS+'&permisId='+ permisID,
+        method: 'GET',
+        success : function(result, request) {
+          console.log('success echo');
+          console.log(result.responseText);
+        },
+        failure: function(message){
+            console.log('failure echo');
+            console.log(message);
+        }
+      });
+    };
     /*
      * Public
      */
@@ -63,7 +78,6 @@ Civadis.remoting = (function() {
           });
         },
         parcelsinfos : function(codeINS,matriceCadastrale) {
-          ///permis/app/rest/carto/findPermisList?codeINS=${codeINS}&matriceCadastrale=${matriceCadastrale}
           Ext.Ajax.request({
             url: 'http://192.168.8.5/permis/app/rest/carto/findPermisList?codeINS='+codeINS+'&matriceCadastrale='+ matriceCadastrale,
             method: 'GET',

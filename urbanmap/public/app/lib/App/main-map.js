@@ -9,7 +9,7 @@ Ext.namespace("UrbanMap");
 
     // global settings
     var urbanMapHost = document.domain.replace("-urban.imio-app.be","-carto.imio-app.be");
-    if(printCapabilities.createURL && printCapabilities.createURL.indexof("127.0.0.1") > 0) {
+    if(printCapabilities.createURL && printCapabilities.createURL.indexOf("127.0.0.1") > 0) {
         var printUrl = printCapabilities.printURL.substring(22);
         var createUrl =printCapabilities.createURL.substring(22);
         printCapabilities.printURL = "https://" + urbanMapHost + printUrl;

@@ -213,20 +213,25 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
         				'Le nombre de résultats affiché est limité aux ' + records.length + " premiers."
         		);
         	}
+          if(document.getElementById('link')){
+            URL.revokeObjectURL(document.getElementById('link').href);
+          }
+          var csvString = "";
+          this.getStore().each(function(rec){
+              csvString += Object.values(rec.data.feature.data).join('$').replace(/;/g,',').replace(/\$/g,';')+"\r\n";
+          });
 
-        	var paramsCSV = '&';
-        	Ext.iterate(store.lastOptions.params, function(key,value) {
-        		if(key != "limit") {
-        			paramsCSV += key+'='+encodeURIComponent(value)+'&';
-        		}
-        	});
-
-
-        	var urlCSV = UrbanMap.config.urbanmap_url + '/mapcapas/getCSV/getCSV'+paramsCSV;
-        	var proxyUrlCSV = UrbanMap.config.proxy_url + urlCSV;
-        	urlCSV = urlCSV.replace('\'', ' ');
-
-        	this.setTitle("<a download='resultat.csv' href='"+proxyUrlCSV+"'>Résultats (downloader CSV)</a>");
+          this.setTitle("<a id=\"link\" target=\"_blank\" download=\"urban.csv\">Résultats (télécharger le CSV)</a>");
+          var file;
+          try {
+            // Specify the filename using the File constructor, but ...
+            file = new File([csvString], "urban.csv", {type: "text/csv;charset=utf-8"});
+          } catch (e) {
+            // ... fall back to the Blob constructor if that isn't supported.
+            file = new Blob([csvString], {type: "text/csv;charset=utf-8"});
+          }
+          var url = URL.createObjectURL(file);
+          document.getElementById('link').href = url;
 
         	if (this.capakeyToHighlight != null)
         	{

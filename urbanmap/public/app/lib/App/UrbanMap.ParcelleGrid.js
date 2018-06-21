@@ -213,25 +213,29 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
         				'Le nombre de résultats affiché est limité aux ' + records.length + " premiers."
         		);
         	}
-          if(document.getElementById('link')){
-            URL.revokeObjectURL(document.getElementById('link').href);
-          }
-          var csvString = "";
-          this.getStore().each(function(rec){
-              csvString += Object.values(rec.data.feature.data).join('$').replace(/;/g,',').replace(/\$/g,';')+"\r\n";
-          });
 
-          this.setTitle("<a id=\"link\" target=\"_blank\" download=\"urban.csv\">Résultats (télécharger le CSV)</a>");
-          var file;
-          try {
-            // Specify the filename using the File constructor, but ...
-            file = new File([csvString], "urban.csv", {type: "text/csv;charset=utf-8"});
-          } catch (e) {
-            // ... fall back to the Blob constructor if that isn't supported.
-            file = new Blob([csvString], {type: "text/csv;charset=utf-8"});
-          }
-          var url = URL.createObjectURL(file);
-          document.getElementById('link').href = url;
+          this.setTitle("<a id=\"link\" target=\"_blank\" download=\"urban.csv\" href=\"#\">Résultats (télécharger le CSV)</a>");
+          var curstore = this.getStore()
+          document.getElementById('link').onclick = function(){
+            if(document.getElementById('link')){
+              URL.revokeObjectURL(document.getElementById('link').href);
+            }
+            var csvString = "";
+            curstore.each(function(rec){
+                csvString += Object.values(rec.data.feature.data).join('$').replace(/;/g,',').replace(/\$/g,';')+"\r\n";
+            });
+            var file;
+            try {
+              // Specify the filename using the File constructor, but ...
+              file = new File([csvString], "urban.csv", {type: "text/csv;charset=utf-8"});
+            } catch (e) {
+              // ... fall back to the Blob constructor if that isn't supported.
+              file = new Blob([csvString], {type: "text/csv;charset=utf-8"});
+            }
+            var url = URL.createObjectURL(file);
+            document.getElementById('link').href = url;
+            return true;
+          };
 
         	if (this.capakeyToHighlight != null)
         	{
@@ -252,6 +256,7 @@ UrbanMap.ParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
         }, this);
 
     } // e/o function initComponent
+
     // }}}
     // {{{
     ,onRender:function() {
